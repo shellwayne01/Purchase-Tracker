@@ -22,7 +22,5 @@ public class TextFileHandler {
 				}
 				System.out.println("End of appendToFile method");
 			}
-		}
-		
-		
+		}		
 }
