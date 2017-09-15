@@ -57,6 +57,5 @@ public class ItemBtns extends JPanel implements ActionListener{
 			}
 		}	
 		return theSelected;
-	}
-	
+	}	
 }
