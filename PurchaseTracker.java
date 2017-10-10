@@ -15,7 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-
+//First page
 public class PurchaseTracker extends JFrame implements ActionListener{
 	private JLabel jl1; 
 	private ItemBtns jpItemButtons;
@@ -41,30 +41,26 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 		setSize(350,450);
 		setVisible(true);
 	}
-	
-	@Override
+		
+	@Override 
 	public void actionPerformed(ActionEvent e) {
 		JButton btnClicked = (JButton) e.getSource();
 			if(btnClicked.equals(jb1)){ 
 				System.out.println("Continue to next panel\n");
-				javax.swing.SwingUtilities.invokeLater(new Runnable(){ 
-					public void run(){
-						PurchaseTracker2 gui = new PurchaseTracker2();
-					}
-				});
+				this.dispose();
+				new PurchaseTracker2().setVisible(true);
 			}		
 	}
 	
+	// Second page
 	public class PurchaseTracker2 extends JFrame implements ActionListener{
 		private JButton jb2, jb3, jb4;
 		private JLabel jlx;
 		private JTextArea jlA;
 		private JLabel [] theSelected;
-		private JLabel [] rCosts;
 		private JTextField[] inputQuants;
 		private Purchase [] purchases;
-		
-		
+			
 		public PurchaseTracker2(){
 			JPanel containerJP2 = new JPanel();
 			containerJP2.setBackground(Color.ORANGE);
@@ -72,16 +68,13 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 			theSelected = jpItemButtons.infoNeeded(); 
 			int y = theSelected.length;
 			inputQuants = new JTextField[y];
-			rCosts = new JLabel[y];
 			purchases = new Purchase[y];
 			
 			for(int i=0; i< y; i++){	
 				if(theSelected[i] != null){
 					containerJP2.add(theSelected[i]);
 					inputQuants[i] = new JTextField("quantity", 5);
-					rCosts[i] = new JLabel("running cost...");
 					containerJP2.add(inputQuants[i]);
-					//containerJP2.add(rCosts[i]); //Ignore me for now
 				}		
 			}
 			
@@ -95,8 +88,7 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 			jlA = new JTextArea(20,20);
 			
 			JScrollPane scroll = new JScrollPane(jlA,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			
-			
+						
 			containerJP2.add(jlx);
 			containerJP2.add(scroll);
 			containerJP2.add(jb3);
@@ -106,24 +98,23 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 			setTitle("Checkout");
 			setSize(300,550);
 			setVisible(true);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-	
+			setDefaultCloseOperation(EXIT_ON_CLOSE);	
 		}
 		
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton btnClicked = (JButton) e.getSource();
 				if(btnClicked.equals(jb3)){
-					setVisible(false); 
+					this.dispose();
+					new PurchaseTracker().setVisible(true);
 				}
-				else if(btnClicked.equals(jb2)){ 
+				else if(btnClicked.equals(jb2)){ //Displays transaction info on GUI and also appends it to purchases.txt
 						String s = "";
 						s = Purchases();
 						if (s != ""){ 
-							TextFileHandler fileHandler = new TextFileHandler();
+							TextFileHandler fileHandler = new TextFileHandler(); 
 							fileHandler.appendToFile("purchases.txt", s);
-							System.out.println("\nTransaction complete."); 
+							System.out.println("\nTransaction complete."); //Just checking
 							JOptionPane.showMessageDialog(null, "Transaction Complete. Thank you!");
 							System.out.print(s); //Just checking
 						}
@@ -144,11 +135,8 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 						purchases[i] = new Purchase(q);
 						purchases[i].setName(theSelected[i].getText());
 						purchases[i].setPrice(jpItemButtons.getPrices()[i]);
-						//rCosts[i] = new JLabel( "$ "+ purchases[i].getCost()); //Ignore me again
 						System.out.println("Purchasing " + q + " "+ theSelected[i].getText());
-						if(purchases[i] !=null){ 
-							s += "\n" + (purchases[i].toString() +"\n");
-							}
+						s += "\n" + (purchases[i].toString() +"\n");
 					}
 				}
 			}
@@ -159,9 +147,7 @@ public class PurchaseTracker extends JFrame implements ActionListener{
 			jlA.setText(s);
 			System.out.println("Transaction in progress..."); //Just checking		
 			return s;
-		}
-					
+		}			
 	}
-
 }
 	
